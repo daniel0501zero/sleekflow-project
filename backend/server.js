@@ -12,7 +12,7 @@ import NotFound from './middleware/notFound.js'
 import cookieParser from 'cookie-parser';
 
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:3000"],
+    origin: ["http://localhost:5173", "http://localhost:3000", "https://todo-web-app-beryl.vercel.app"],
     credentials: true
 }));
 app.use(express.json());
