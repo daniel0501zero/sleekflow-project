@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatDate, getDueStatus } from '../utils/dateUtils';
 import ShareTodo from './ShareTodo';
-import { AppContext } from '../hooks/useApp';
 
 
 const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt, users }) => {
@@ -11,8 +10,6 @@ const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt, us
   const [showDetails, setShowDetails] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [error, setError] = useState('');
-  const { user } = useContext(AppContext);
-  console.log(users);
   const navigate = useNavigate();
 
   const dueStatus = getDueStatus(dueTime);
@@ -37,19 +34,18 @@ const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt, us
   };
 
   const handleDelete = async () => {
+
     setIsDeleting(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos/${id}`, {
-        data: { email: user?.email }
-      });
+      await axios.delete(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos/${id}`)
       window.location.reload();
     } catch (error) {
-      console.log(error);
-      setError(error.response?.data?.message || 'Failed to delete');
+      console.log(error)
     }
     finally {
       setIsDeleting(false);
     }
+
   };
 
   const toggleStatus = async () => {
@@ -146,10 +142,7 @@ const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt, us
                 </div>
                 <div className='flex space-x-3'>
                   <button onClick={handleDelete} className='flex-1 bg-red-600 hover:bg-red-500 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'>Delete</button>
-                  <button onClick={() => {
-                    setIsDeleting(false);
-                    setError('');
-                  }} className='flex-1 bg-gray-600 hover:bg-gray-500 text-white font-medium py-2 px-4 rounded-lg cursor-pointer'>Cancel</button>
+                  <button onClick={() => setIsDeleting(false)} className='flex-1 bg-gray-600 hover:bg-gray-500 text-white font-medium py-2 px-4 rounded-lg cursor-pointer'>Cancel</button>
                 </div>
               </div>
             </div>

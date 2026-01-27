@@ -24,9 +24,7 @@ const App = () => {
   const [user, setUser] = useState();
   const [isLogin, setIsLogin] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalResults, setTotalResults] = useState(0);
-  const [itemsPerPage] = useState(7);
-  const [totalPages, setTotalPages] = useState(0);
+  const [itemsPerPage] = useState(6);
 
   useEffect(() => {
     // Setup axios interceptor for session expiration
@@ -35,10 +33,8 @@ const App = () => {
     const getData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos?page=${currentPage}&limit=${itemsPerPage}`)
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos`)
         setTodos(res.data.allTodos);
-        setTotalResults(res.data.results);
-        setTotalPages(Math.ceil(res.data.results / itemsPerPage));
         console.log(res.data)
         setError(null);
       } catch (error) {
@@ -133,6 +129,8 @@ const App = () => {
       return 0;
     });
 
+  const totalPages = Math.ceil(filteredTodos.length / itemsPerPage);
+  const paginatedTodos = filteredTodos.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const handleCreateTodo = async (formData) => {
     console.log(formData)
@@ -261,7 +259,28 @@ const App = () => {
                     </p>
                   </div>
                 ) : (
-                    <TodoList todos={filteredTodos} />
+                  <>
+                    <TodoList todos={paginatedTodos} />
+                    <div className="flex justify-center gap-5 items-center mt-6">
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+                      >
+                        Previous
+                      </button>
+                      <span className="text-gray-700">
+                        Page {currentPage} of {totalPages}
+                      </span>
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </>
                 )}
               </div>
             </div>

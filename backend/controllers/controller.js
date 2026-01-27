@@ -36,7 +36,7 @@ export const viewAllTodo = async (req, res) => {
 
 
         const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 7;
+        const limit = Number(req.query.limit) || 100;
         const skip = (page - 1) * limit;
 
         results.skip(skip).limit(limit);
@@ -114,7 +114,6 @@ export const shareTodo = async (req, res) => {
         const id  = req.params.id;
         const email = req.body.email;
 
-        // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({ message: 'Invalid email format' });
