@@ -80,12 +80,30 @@ export const updateTodo = async (req, res) => {
 
 export const deleteTodo = async (req, res) => {
     try {
-        const id = req.params.id
-        const todo = await todos.findOneAndDelete({ _id: id })
+        const id = req.params.id;
+        const userEmail = req.body.email;
+
+        const todo = await todos.findOne({ _id: id });
         if (!todo) {
-            res.status(404).json({ msg: "Todo not found" })
+            return res.status(404).json({ msg: "Todo not found" });
         }
-        res.status(200).send("Todo has been deleted.")
+
+        // If the todo is shared with multiple users, just remove the user from the users array 
+        if (todo.users && todo.users.length > 1) {
+            todo.users = todo.users.filter(email => email !== userEmail);
+            await todo.save();
+            return res.status(200).json({ 
+                message: "You have been removed from this shared todo",
+                todo 
+            });
+        }
+
+        const deletedTodo = await todos.findOneAndDelete({ _id: id });
+        res.status(200).json({ 
+            message: "Todo has been deleted.",
+            todo: deletedTodo 
+        });
+
     } catch (error) {
         res.status(500).json({ msg: error });
     }
@@ -96,6 +114,7 @@ export const shareTodo = async (req, res) => {
         const id  = req.params.id;
         const email = req.body.email;
 
+        // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({ message: 'Invalid email format' });
