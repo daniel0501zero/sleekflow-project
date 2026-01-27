@@ -23,8 +23,11 @@ const App = () => {
   });
   const [user, setUser] = useState();
   const [isLogin, setIsLogin] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+  const [itemsPerPage] = useState(7);
+  const [totalPages, setTotalPages] = useState(0);
 
-  // Fetch todos
   useEffect(() => {
     // Setup axios interceptor for session expiration
     setupAxiosInterceptors(navigate);
@@ -32,8 +35,10 @@ const App = () => {
     const getData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos`)
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos?page=${currentPage}&limit=${itemsPerPage}`)
         setTodos(res.data.allTodos);
+        setTotalResults(res.data.results);
+        setTotalPages(Math.ceil(res.data.results / itemsPerPage));
         console.log(res.data)
         setError(null);
       } catch (error) {
@@ -50,7 +55,6 @@ const App = () => {
         setUser(response.data)
       } catch (error) {
         console.log(error)
-        // Session expired or unauthorized
         if (error.response?.status === 401 || error.response?.status === 403) {
           navigate('/login', { state: { sessionExpired: true } });
         }
@@ -71,7 +75,7 @@ const App = () => {
         const startToday = new Date();
         startToday.setHours(0, 0, 0, 0);
         const dueDate = todo.dueTime ? new Date(todo.dueTime) : null;
-        switch (filters.dueFilter){          
+        switch (filters.dueFilter) {
           case "today": {
             const endToday = new Date(startToday);
             endToday.setHours(23, 59, 59, 999);
@@ -179,7 +183,7 @@ const App = () => {
   return (
     <AppContext.Provider value={{ todos, setTodos, handleDeleteTodo, user }}>
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
-        <Header isLogin={isLogin} setIsLogin={setIsLogin} user={user}/>
+        <Header isLogin={isLogin} setIsLogin={setIsLogin} user={user} />
 
         <main className="container mx-auto px-4 py-8">
           {error && (
@@ -195,7 +199,7 @@ const App = () => {
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">
                   ✨ Create New Todo
                 </h2>
-                <TodoForm onSubmit={handleCreateTodo} user={user}/>
+                <TodoForm onSubmit={handleCreateTodo} user={user} />
               </div>
 
               <div className="bg-white rounded-xl shadow-lg p-6">
@@ -213,7 +217,7 @@ const App = () => {
                 <div className="flex justify-between items-center mb-6">
                   <div>
                     <h2 className="text-2xl font-bold text-gray-800">
-                       Your Tasks
+                      Your Tasks
                     </h2>
                     <p className="text-gray-600">
                       {filteredTodos.length} task{filteredTodos.length !== 1 ? 's' : ''}
@@ -257,7 +261,7 @@ const App = () => {
                     </p>
                   </div>
                 ) : (
-                  <TodoList todos={filteredTodos} />
+                    <TodoList todos={filteredTodos} />
                 )}
               </div>
             </div>

@@ -5,10 +5,12 @@ import { formatDate, getDueStatus } from '../utils/dateUtils';
 import ShareTodo from './ShareTodo';
 
 
-const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt }) => {
+const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt, users }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [error, setError] = useState('');
+  console.log(users);
   const navigate = useNavigate();
 
   const dueStatus = getDueStatus(dueTime);
@@ -129,19 +131,22 @@ const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt }) 
             className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg disabled:opacity-50 cursor-pointer"
             title="Delete"
           >
-            🗑️  
+            🗑️
           </button>
           {isDeleting && (
             <div className="fixed inset-0 bg-gray-50 bg-opacity-50 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-xl p-6 w-96">
                 <h1 className='text-center text-xl font-bold py-3'>Warning!</h1>
-                <hr className='mb-5'/>
+                <hr className='mb-5' />
                 <div className='space-y-4 flex flex-row gap-5 my-2'>
                   <p className='block text-md m-auto font-medium text-gray-700 mb-2'>Are you sure to delete this todo?</p>
                 </div>
                 <div className='flex space-x-3'>
                   <button onClick={handleDelete} className='flex-1 bg-red-600 hover:bg-red-500 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'>Delete</button>
-                    <button onClick={() => setIsDeleting(false)} className='flex-1 bg-gray-600 hover:bg-gray-500 text-white font-medium py-2 px-4 rounded-lg cursor-pointer'>Cancel</button>
+                  <button onClick={() => {
+                    setIsDeleting(false);
+                    setError('');
+                  }} className='flex-1 bg-gray-600 hover:bg-gray-500 text-white font-medium py-2 px-4 rounded-lg cursor-pointer'>Cancel</button>
                 </div>
               </div>
             </div>
@@ -160,7 +165,7 @@ const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt }) 
 
           <Link
             to={`/view/${id}`}
-            state={{ id, name, status, description, dueTime, createdAt, updatedAt }}
+            state={{ id, name, status, description, dueTime, createdAt, updatedAt, users }}
             className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100"
           >
             👁️ View Details
