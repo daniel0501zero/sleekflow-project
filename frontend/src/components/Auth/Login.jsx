@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Header from "../Layout/Header";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Login = () => {
     const [err, setErr] = useState("");
     const [sessionExpired, setSessionExpired] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
     const {
         register,
         handleSubmit,
@@ -69,13 +71,22 @@ const Login = () => {
                     </div>
                     <div className="mb-9">
                         <label htmlFor="password" className="block mb-3 ">Password</label>
-                        <input id="password" {...register("password", {
-                            required: "Password is required",
-                            minLength: {
-                                value: 6,
-                                message: "Password must be at least 6 characters",
-                            },
-                        })} type="text" className="p-6 border border-indigo rounded-xl text-xl transition h-10 focus:border-indigo-500 lg:w-lg md:w-md sm:w-sm" />
+                        <div className="relative">
+                            <input id="password" {...register("password", {
+                                required: "Password is required",
+                                minLength: {
+                                    value: 6,
+                                    message: "Password must be at least 6 characters",
+                                },
+                            })} type={showPassword ? "text" : "password"} className="p-6 border border-indigo rounded-xl text-xl transition h-10 focus:border-indigo-500 lg:w-lg md:w-md sm:w-sm w-full pr-12" />
+                            <button 
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="transition absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800 cursor-pointer"
+                            >
+                                {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+                            </button>
+                        </div>
                         {
                             errors.password && <div className="text-red-500">{errors.password.message}</div>
                         }
