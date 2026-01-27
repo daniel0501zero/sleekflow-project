@@ -1,7 +1,7 @@
 import React from "react"
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { formatDate } from "../utils/dateUtils";
+import { formatDate, formatUpdatedAt } from "../utils/dateUtils";
 
 const ViewTodo = () => {
     const location = useLocation();
@@ -17,8 +17,8 @@ const ViewTodo = () => {
                             <p>Status: <span className="flex">{status}</span></p>
                             <p >Description: <span className="flex">{description ? description : "No description provided"}</span></p>
                             <p >DueDate: <span className="flex">{formatDate(dueTime)}</span></p>
-                            <p>Created At: <span className="flex">{formatDate(createdAt)}</span></p>
-                            <p >Updated At: <span className="flex">{updatedAt ? formatDate(updatedAt): "Not recent update"}</span></p>
+                            <p>Created At: <span className="flex">{formatUpdatedAt(createdAt)}</span></p>
+                            <p >Updated At: <span className="flex">{updatedAt ? formatUpdatedAt(updatedAt): "Not recent update"}</span></p>
                             <p >Shared Users: <span className="flex">{users && users.length > 0 ? users.join(', ') : 'No users shared'}</span></p>
                         </section>
                     </div>

@@ -3,11 +3,11 @@ export const validateTodo = (formData) => {
 
   // Name validation
   if (!formData.name.trim()) {
-    errors.name = 'Task name is required';
+    errors.name = 'Todo name is required';
   } else if (formData.name.length < 3) {
-    errors.name = 'Task name must be at least 3 characters';
+    errors.name = 'Todo name must be at least 3 characters';
   } else if (formData.name.length > 100) {
-    errors.name = 'Task name cannot exceed 100 characters';
+    errors.name = 'Todo name cannot exceed 100 characters';
   }
 
   // Status validation

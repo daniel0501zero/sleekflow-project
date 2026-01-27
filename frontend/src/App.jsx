@@ -265,7 +265,7 @@ const App = () => {
                       <button
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                         disabled={currentPage === 1}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50 cursor-pointer"
+                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                       >
                         Previous
                       </button>
@@ -275,7 +275,7 @@ const App = () => {
                       <button
                         onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50 cursor-pointer"
+                        className="px-4 py-2 bg-indigo-600 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                       >
                         Next
                       </button>

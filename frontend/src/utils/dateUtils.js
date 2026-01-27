@@ -30,6 +30,19 @@ export const formatDate = (dateString) => {
   }
 };
 
+export const formatUpdatedAt = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const options = { 
+    year: 'numeric', 
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit' 
+  };
+  return date.toLocaleDateString('en-US', options);
+}
+
 export const formatDateForInput = (dateString) => {
   if (!dateString) return '';
   const date = new Date(dateString);

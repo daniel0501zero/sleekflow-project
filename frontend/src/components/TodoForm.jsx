@@ -90,7 +90,7 @@ const TodoForm = ({ onSubmit, initialData = {}, user }) => {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Task Name *
+          Todo Name *
         </label>
         <input
           type="text"
