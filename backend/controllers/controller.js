@@ -79,27 +79,30 @@ export const updateTodo = async (req, res) => {
 }
 
 export const deleteTodo = async (req, res) => {
+    console.log("Delete Todo called");
     try {
         const id = req.params.id;
-        const userEmail = req.body.email;
+        const email = req.params.email;
 
         const todo = await todos.findOne({ _id: id });
         if (!todo) {
             return res.status(404).json({ msg: "Todo not found" });
         }
 
-        // If the todo is shared with multiple users, just remove the user from the users array 
+        console.log("Todo users before deletion:", todo.users);
+
         if (todo.users && todo.users.length > 1) {
-            todo.users = todo.users.filter(email => email !== userEmail);
+            todo.users = todo.users.filter(userEmail => userEmail !== email);
+            console.log("Todo users after deletion:", todo.users);
             await todo.save();
-            return res.status(200).json({ 
-                message: "You have been removed from this shared todo",
-                todo 
+            return res.status(200).json({
+                message: `Access for ${email} has been removed from the todo.`,
+                todo: todo
             });
         }
 
         const deletedTodo = await todos.findOneAndDelete({ _id: id });
-        res.status(200).json({ 
+        return res.status(200).json({ 
             message: "Todo has been deleted.",
             todo: deletedTodo 
         });

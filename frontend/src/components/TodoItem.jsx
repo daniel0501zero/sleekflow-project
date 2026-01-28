@@ -5,7 +5,7 @@ import { formatDate, getDueStatus } from '../utils/dateUtils';
 import ShareTodo from './ShareTodo';
 
 
-const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt, users }) => {
+const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt, users, user }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -36,8 +36,10 @@ const Todo = ({ id, name, status, description, dueTime, createdAt, updatedAt, us
   const handleDelete = async () => {
 
     setIsDeleting(true);
+    console.log("Deleting todo with id:", id);
+    console.log("Current user email:", user.email);
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos/${id}`)
+      await axios.delete(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos/${id}/${user.email}`)
       window.location.reload();
     } catch (error) {
       console.log(error)

@@ -11,7 +11,7 @@ router.get('/:id', viewTodo)
 //update put
 router.put('/:id', updateTodo)
 //delete delete
-router.delete('/:id', deleteTodo)
+router.delete('/:id/:email', deleteTodo)
 
 //share todo
 router.post('/:id/share', shareTodo);

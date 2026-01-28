@@ -260,7 +260,7 @@ const App = () => {
                   </div>
                 ) : (
                   <>
-                    <TodoList todos={paginatedTodos} />
+                    <TodoList todos={paginatedTodos} user={user} />
                     <div className="flex justify-center gap-5 items-center mt-6">
                       <button
                         onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
