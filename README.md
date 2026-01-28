@@ -41,3 +41,7 @@ docker-compose down -v
 - Proper networking between containers
 - Environment variable management
 - Volume persistence for database
+
+## Modifications
+
+If you wish to change the port to connect the database, you need to modify the .env file in both frontend and backend folders to ensure the docker container runs smoothly.
