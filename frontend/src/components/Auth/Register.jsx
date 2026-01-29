@@ -8,6 +8,7 @@ const Register = () => {
     const navigate = useNavigate();
     const [successMessage, setSuccessMessage] = useState("");
     const [isLogin, setIsLogin] = useState(true);
+    const [err, setErr] = useState("");
     const {
         register,
         handleSubmit,
@@ -24,8 +25,8 @@ const Register = () => {
             }
             console.log(response.data);
         } catch (error) {
-            console.log(error)
-            alert('Server error, please try to create again.');
+            console.log(error.response.data.message)
+            setErr(error.response.data.message || "Registration failed, please retry");
         }
     }
     return (
@@ -37,6 +38,11 @@ const Register = () => {
                     {successMessage && (
                         <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-3">
                             ✅ {successMessage}
+                        </div>
+                    )}
+                    {err && (
+                        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-3">
+                            ❌ {err}
                         </div>
                     )}
                     <div className="mb-9">
