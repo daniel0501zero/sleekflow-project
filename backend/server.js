@@ -20,26 +20,19 @@ app.use(cookieParser());
 
 // Debug middleware
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
+    console.log(`${req.method} ${req.url}`);
+    next();
 });
 
 app.use('/api/v1/users', authRouter);
 app.use('/api/v1/todos', router);
 app.use(NotFound)
 
+await connectDB(url).then(() => console.log("Database connected")).catch((err) => console.log(err));
 
-const start = async () => {
-    try {
-        await connectDB(url);
-        app.listen(port, () => 
-            console.log(`app listening at port ${port}`)
-        )
-    }
-    catch (err) {
-        console.log(err);
-    }
-
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => console.log(`app listening at port ${port}`))
 }
 
-start();
+//export app for vercel deployment
+export default app;
