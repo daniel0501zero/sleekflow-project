@@ -28,11 +28,13 @@ app.use('/api/v1/users', authRouter);
 app.use('/api/v1/todos', router);
 app.use(NotFound)
 
-await connectDB(url);
+const start = async () => {
+  try {
+    await connectDB(url);
+    app.listen(port, () => console.log(`Server running on port ${port}`));
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-if (process.env.NODE_ENV !== "production") {
-    app.listen(port, () => console.log(`app listening at port ${port}`))
-}
-
-//export app for vercel deployment
-export default app;
+start();
