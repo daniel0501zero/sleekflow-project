@@ -12,7 +12,6 @@ import NotFound from './middleware/notFound.js'
 import cookieParser from 'cookie-parser';
 
 app.use(cors({
-    origin: "*",
     credentials: true
 }));
 app.use(express.json());
