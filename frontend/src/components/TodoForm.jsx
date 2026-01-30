@@ -7,7 +7,8 @@ const TodoForm = ({ onSubmit, initialData = {}, user }) => {
     name: initialData.name || '',
     status: initialData.status || 'Not Started',
     dueTime: initialData.dueTime ? formatDateForInput(initialData.dueTime) : '',
-    description: initialData.description || ''
+    description: initialData.description || '',
+    owner: initialData.owner || (user ? user.email : '')
   });
 
   const [errors, setErrors] = useState({});
@@ -46,6 +47,7 @@ const TodoForm = ({ onSubmit, initialData = {}, user }) => {
       const submitData = {
         ...formData,
         dueTime: formData.dueTime || null,
+        owner: formData.owner || (user ? user.email : ''),
         users: user?.email ? [user.email] : []
       };
 

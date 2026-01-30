@@ -155,20 +155,6 @@ const App = () => {
     }
   };
 
-  const handleDeleteTodo = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this todo?')) return;
-
-    try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_BASEURL}/api/v1/todos/${id}`);
-      setTodos(prev => prev.filter(todo => todo._id !== id));
-      window.location.reload()
-      return { success: true, message: 'Todo deleted successfully!' };
-    } catch (error) {
-      console.error('Error deleting todo:', error);
-      return { success: false, message: 'Failed to delete todo' };
-    }
-  };
-
   const getStats = () => {
     return {
       total: filteredTodos.length,
@@ -179,7 +165,7 @@ const App = () => {
   };
 
   return (
-    <AppContext.Provider value={{ todos, setTodos, handleDeleteTodo, user }}>
+    <AppContext.Provider value={{ todos, setTodos, user }}>
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
         <Header isLogin={isLogin} setIsLogin={setIsLogin} user={user} />
 

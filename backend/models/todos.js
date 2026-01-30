@@ -1,4 +1,4 @@
-const statusOpts = ['Not Started','In Progress','Completed']
+const statusOpts = ['Not Started', 'In Progress', 'Completed']
 import mongoose from "mongoose";
 const todoSchema = new mongoose.Schema({
     name: {
@@ -27,22 +27,20 @@ const todoSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    /*userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    owner: {
+        type: String,
         required: true
+    },
+    users: {
+        type: [String],
+        validate: {
+            validator: function (v) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return v.every(email => emailRegex.test(email));
+            },
+            message: props => `${props.value} contains invalid emails`
+        }
     }
-    */
-   users: {
-    type: [String],
-    validate: {
-        validator: function(v) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return v.every(email => emailRegex.test(email));
-        },
-        message: props => `${props.value} contains invalid emails`
-    }
-   }
 })
 
 const todos = mongoose.model('todos', todoSchema);
