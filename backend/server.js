@@ -28,9 +28,9 @@ app.use('/api/v1/users', authRouter);
 app.use('/api/v1/todos', router);
 app.use(NotFound)
 
-await connectDB(url).then(() => console.log("Database connected")).catch((err) => console.log(err));
+await connectDB(url);
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
     app.listen(port, () => console.log(`app listening at port ${port}`))
 }
 
